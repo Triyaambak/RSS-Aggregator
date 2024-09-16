@@ -27,3 +27,4 @@ go.work.sum
 RSS-Aggregator
 .DS_Store
 .vscode/
+vendor/
