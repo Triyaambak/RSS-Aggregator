@@ -12,7 +12,7 @@ import (
 
 func main() {
 	godotenv.Load(".env")
-	serverPort := os.Getenv("PORT")
+	serverPort := os.Getenv("API_PORT")
 
 	router := chi.NewRouter()
 
