@@ -5,15 +5,20 @@ import (
 	"net/http"
 	"os"
 
+	config "github.com/Triyaambak/RSS-Aggregator/config"
+	handler "github.com/Triyaambak/RSS-Aggregator/handler"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 func main() {
 	godotenv.Load(".env")
 	serverPort := os.Getenv("API_PORT")
+	dbUrl := os.Getenv("DB_URL")
 
+	apiCfg := config.ConnectDB(dbUrl)
 	router := chi.NewRouter()
 
 	router.Use(cors.Handler(cors.Options{
@@ -26,8 +31,11 @@ func main() {
 	}))
 
 	v1Router := chi.NewRouter()
-	v1Router.Get("/healthz", handlerReadiness)
-	v1Router.Get("/err", handlerErr)
+	v1Router.Get("/healthz", handler.HandlerReadiness)
+	v1Router.Get("/err", handler.HandlerErr)
+	v1Router.Post("/users", func(w http.ResponseWriter, r *http.Request) {
+		handler.HandlerCreateUser(apiCfg, w, r)
+	})
 
 	router.Mount("/v1", v1Router)
 

@@ -1,5 +1,6 @@
 vendor/
 tmp/
+internal/
 
 .git
 .gitignore
