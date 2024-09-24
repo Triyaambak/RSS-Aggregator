@@ -16,7 +16,6 @@ func ConnectDB(dbUrl string) *ApiConfg {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
 
 	apiCfg := ApiConfg{
 		DB: database.New(db),
