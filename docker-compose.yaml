@@ -33,6 +33,8 @@ services:
           action: sync
         - path: go.mod
           action: rebuild
+        - path: ./sql
+          action: rebuild
 
 volumes:
   psql:
