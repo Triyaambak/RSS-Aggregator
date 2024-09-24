@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"encoding/json"
@@ -14,12 +14,12 @@ func RespondWithError(w http.ResponseWriter, statusCode int, msg string) {
 	type errRes struct {
 		Error string `json:"error"`
 	}
-	respondWithJSON(w, statusCode, errRes{
+	RespondWithJSON(w, statusCode, errRes{
 		Error: msg,
 	})
 }
 
-func respondWithJSON(w http.ResponseWriter, statusCode int, payload interface{}) {
+func RespondWithJSON(w http.ResponseWriter, statusCode int, payload interface{}) {
 	dat, err := json.Marshal(payload)
 	if err != nil {
 		log.Println("failed to marshal json response", err)
