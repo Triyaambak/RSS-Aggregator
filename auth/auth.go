@@ -12,7 +12,7 @@ func GetApiKey(headers http.Header) (string, error) {
 		return "", errors.New("authorization header is missing")
 	}
 
-	vals := strings.Split(authKey, "")
+	vals := strings.Split(authKey, " ")
 	if len(vals) != 2 {
 		return "", errors.New("authorization header is invalid")
 	}
