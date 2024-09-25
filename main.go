@@ -39,6 +39,12 @@ func main() {
 	v1Router.Get("/users", func(w http.ResponseWriter, r *http.Request) {
 		handler.HandlerGetUser(apiCfg, w, r)
 	})
+	v1Router.Post("/feeds", func(w http.ResponseWriter, r *http.Request) {
+		handler.HandlerCreateUserFeed(apiCfg, w, r)
+	})
+	v1Router.Get("/feeds", func(w http.ResponseWriter, r *http.Request) {
+		handler.HandlerGetFeed(apiCfg, w, r)
+	})
 
 	router.Mount("/v1", v1Router)
 
