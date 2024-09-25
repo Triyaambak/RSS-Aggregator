@@ -33,7 +33,12 @@ services:
           action: sync
         - path: go.mod
           action: rebuild
-        - path: ./sql
+        - path: ./sql/migrations
+          action: sync+restart
+          target: /app
+        - path: ./sql/schema
+          action: rebuild
+        - path: ./sql/queries
           action: rebuild
 
 volumes:

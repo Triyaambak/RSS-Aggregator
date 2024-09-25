@@ -45,6 +45,9 @@ func main() {
 	v1Router.Get("/feeds", func(w http.ResponseWriter, r *http.Request) {
 		handler.HandlerGetFeed(apiCfg, w, r)
 	})
+	v1Router.Post("/feed_follow", func(w http.ResponseWriter, r *http.Request) {
+		handler.HandlerCreateFeedFollow(apiCfg, w, r)
+	})
 
 	router.Mount("/v1", v1Router)
 

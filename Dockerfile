@@ -19,4 +19,4 @@ RUN sqlc generate
 
 EXPOSE 3001
 
-CMD ["sh", "-c", "migrate -path=./sql/schema -database ${DB_URL} up && air"]
+CMD ["sh", "-c", "migrate -path=./sql/migrations -database ${DB_URL} up && air"]

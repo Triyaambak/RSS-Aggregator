@@ -1,0 +1,1 @@
+DROP TABLE IF EXSISTS feed_follow;
