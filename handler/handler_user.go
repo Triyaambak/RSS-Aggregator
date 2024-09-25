@@ -7,8 +7,8 @@ import (
 	"time"
 
 	config "github.com/Triyaambak/RSS-Aggregator/config"
-	auth "github.com/Triyaambak/RSS-Aggregator/internal/auth"
 	"github.com/Triyaambak/RSS-Aggregator/internal/database"
+	middleware "github.com/Triyaambak/RSS-Aggregator/middleware"
 	"github.com/google/uuid"
 )
 
@@ -37,17 +37,9 @@ func HandlerCreateUser(apiCfg *config.ApiConfg, w http.ResponseWriter, r *http.R
 }
 
 func HandlerGetUser(apiCfg *config.ApiConfg, w http.ResponseWriter, r *http.Request) {
-	apiKey, err := auth.GetApiKey(r.Header)
+	user, err := middleware.AuthMiddleware(apiCfg, r)
 	if err != nil {
-		RespondWithError(w, 403, fmt.Sprintln("Error while getting api key in HandlerGetUser func", err))
-		return
+		RespondWithError(w, 403, fmt.Sprintln("Error while getting user in HandlerGetUser func", err))
 	}
-
-	user, err := apiCfg.DB.GetUserByApiKey(r.Context(), apiKey)
-	if err != nil {
-		RespondWithError(w, 400, fmt.Sprintln("Error while getting user in HandlerGetUser func", err))
-		return
-	}
-
 	RespondWithJSON(w, 200, user)
 }
