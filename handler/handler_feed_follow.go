@@ -10,6 +10,7 @@ import (
 	"github.com/Triyaambak/RSS-Aggregator/internal/database"
 	middleware "github.com/Triyaambak/RSS-Aggregator/middleware"
 	models "github.com/Triyaambak/RSS-Aggregator/models"
+	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 )
 
@@ -41,4 +42,44 @@ func HandlerCreateFeedFollow(apiCfg *config.ApiConfg, w http.ResponseWriter, r *
 	}
 
 	RespondWithJSON(w, 201, models.DatabaseFeedFollowToStructFeedFollow(feed))
+}
+
+func HandlerGetFeedFollows(apiCfg *config.ApiConfg, w http.ResponseWriter, r *http.Request) {
+	user, err := middleware.AuthMiddleware(apiCfg, r)
+	if err != nil {
+		RespondWithError(w, 403, fmt.Sprintln("Error while getting user in HandlerGetFeedFollows func", err))
+		return
+	}
+
+	feed, err := apiCfg.DB.GetFeedFollowsByUserId(r.Context(), user.ID)
+	if err != nil {
+		RespondWithError(w, 400, fmt.Sprintln("Error while creating feed follow in HandlerGetFeedFollows func", err))
+	}
+
+	RespondWithJSON(w, 201, models.DatabseFeedFollowsToStructFeedFollows(feed))
+}
+
+func HandlerDeleteFeedFollow(apiCfg *config.ApiConfg, w http.ResponseWriter, r *http.Request) {
+	user, err := middleware.AuthMiddleware(apiCfg, r)
+	if err != nil {
+		RespondWithError(w, 403, fmt.Sprintln("Error while getting user in HandlerDeleteFeedFollow func", err))
+		return
+	}
+
+	feedFollowIdStr := chi.URLParam(r, "feedFollowId")
+	feedFollowId, err := uuid.Parse(feedFollowIdStr)
+	if err != nil {
+		RespondWithError(w, 400, fmt.Sprintln("Error while parsing feed follow id in HandlerDeleteFeedFollow func", err))
+		return
+	}
+
+	err = apiCfg.DB.DeletFeedFollow(r.Context(), database.DeletFeedFollowParams{
+		ID:     feedFollowId,
+		UserID: user.ID,
+	})
+	if err != nil {
+		RespondWithError(w, 400, fmt.Sprintln("Error while delete feed follow in HandlerDeleteFeedFollow func", err))
+	}
+
+	RespondWithJSON(w, 200, "Feed follow deleted successfully")
 }

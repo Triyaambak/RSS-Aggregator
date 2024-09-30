@@ -24,3 +24,11 @@ func DatabaseFeedFollowToStructFeedFollow(dbFeedFollow database.FeedFollow) Feed
 		UserID:    dbFeedFollow.UserID,
 	}
 }
+
+func DatabseFeedFollowsToStructFeedFollows(dbFeedFollow []database.FeedFollow) []FeedFollow {
+	var feedFollows []FeedFollow
+	for _, feedFollow := range dbFeedFollow {
+		feedFollows = append(feedFollows, DatabaseFeedFollowToStructFeedFollow(feedFollow))
+	}
+	return feedFollows
+}
