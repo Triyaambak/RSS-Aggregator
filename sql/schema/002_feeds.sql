@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS feeds (
   updated_at TIMESTAMP NOT NULL,
   name TEXT NOT NULL,
   url TEXT UNIQUE NOT NULL,
+  last_fetched_at TIMESTAMP,
   users_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
 
