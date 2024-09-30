@@ -4,9 +4,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	config "github.com/Triyaambak/RSS-Aggregator/config"
 	handler "github.com/Triyaambak/RSS-Aggregator/handler"
+	utils "github.com/Triyaambak/RSS-Aggregator/utils"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
@@ -20,6 +22,8 @@ func main() {
 
 	apiCfg := config.ConnectDB(dbUrl)
 	router := chi.NewRouter()
+
+	go utils.StartScrapping(apiCfg.DB, 5, time.Minute)
 
 	router.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"http://*", "https://*"},

@@ -9,7 +9,7 @@ import (
 	models "github.com/Triyaambak/RSS-Aggregator/models"
 )
 
-func UrlToFeed(url string) (models.RSSFEED, error) {
+func urlToFeed(url string) (models.RSSFEED, error) {
 	httpClient := &http.Client{
 		Timeout: 10 * time.Second,
 	}
