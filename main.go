@@ -58,6 +58,9 @@ func main() {
 	v1Router.Delete("/feed_follow/{feedFollowId}", func(w http.ResponseWriter, r *http.Request) {
 		handler.HandlerDeleteFeedFollow(apiCfg, w, r)
 	})
+	v1Router.Get("/posts", func(w http.ResponseWriter, r *http.Request) {
+		handler.HandlerGetPosts(apiCfg, w, r)
+	})
 
 	router.Mount("/v1", v1Router)
 

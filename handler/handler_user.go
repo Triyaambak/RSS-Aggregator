@@ -43,3 +43,22 @@ func HandlerGetUser(apiCfg *config.ApiConfg, w http.ResponseWriter, r *http.Requ
 	}
 	RespondWithJSON(w, 200, user)
 }
+
+func HandlerGetPosts(apiCfg *config.ApiConfg, w http.ResponseWriter, r *http.Request) {
+	user, err := middleware.AuthMiddleware(apiCfg, r)
+	if err != nil {
+		RespondWithError(w, 403, fmt.Sprintln("Error while getting user in HandlerGetsPosts func", err))
+		return
+	}
+
+	posts, err := apiCfg.DB.GetPostsForUser(r.Context(), database.GetPostsForUserParams{
+		UserID: user.ID,
+		Limit:  5,
+	})
+	if err != nil {
+		RespondWithError(w, 400, fmt.Sprintln("Error while getting posts in HandlerGetsPosts func", err))
+		return
+	}
+
+	RespondWithJSON(w, 200, posts)
+}
