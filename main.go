@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -19,6 +20,8 @@ func main() {
 	godotenv.Load(".env")
 	serverPort := os.Getenv("API_PORT")
 	dbUrl := os.Getenv("DB_URL")
+
+	fmt.Println("Hello")
 
 	apiCfg := config.ConnectDB(dbUrl)
 	router := chi.NewRouter()
@@ -76,4 +79,5 @@ func main() {
 	}
 	log.Printf("Server listening on PORT %s", serverPort)
 
+	fmt.Println("End")
 }
